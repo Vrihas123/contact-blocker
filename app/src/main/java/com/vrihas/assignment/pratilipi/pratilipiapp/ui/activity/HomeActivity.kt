@@ -70,7 +70,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         btnImport.setOnClickListener() {
             if ( checkAndRequestPermissions()) {
                 getContacts()
-                Log.e("getcontacts", "" + contactsFromDevice.size)
+//                Log.e("getcontacts", "" + contactsFromDevice.size)
                 contactsAdapter.setContactList(contactsFromDevice)
             }
 
@@ -264,10 +264,6 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
                                 //proceed with logic by disabling the related features or quit the app.
                             }
                         }
-
-
-
-
                     }
                 }
             }
@@ -349,7 +345,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
                 }
             }
         } else {
-            //   toast("No contacts available!")
+            Toast.makeText(this, "No Contacts available", Toast.LENGTH_LONG).show()
         }
         cursor.close()
         pbContacts.visibility = View.GONE

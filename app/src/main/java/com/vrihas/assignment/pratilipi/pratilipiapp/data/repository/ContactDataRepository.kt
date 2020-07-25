@@ -10,7 +10,6 @@ class ContactDataRepository{
     @Inject
     lateinit var database: AppDatabase
 
-
     init {
         MyApplication.instance.getComponent()!!.inject(this)
     }

@@ -37,7 +37,7 @@ class ContactsAdapter internal constructor(context: Context, contactAdapterCallb
     internal fun setContactList(contactList: MutableList<User>) {
         this.contactList = contactList
         notifyDataSetChanged()
-        Log.e("list", "list size ==> " + contactList.size )
+//        Log.e("list", "list size ==> " + contactList.size )
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {

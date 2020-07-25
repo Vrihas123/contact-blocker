@@ -9,8 +9,6 @@ class MyApplication : Application() {
 
     var mApplicationComponent: ApplicationComponent? = null
 
-//    private val myApplication: MyApplication? = null
-
     companion object {
         lateinit var instance : MyApplication
         private set
