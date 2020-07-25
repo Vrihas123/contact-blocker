@@ -9,6 +9,7 @@ class MyApplication : Application() {
 
     var mApplicationComponent: ApplicationComponent? = null
 
+    // Creating single instance of Application
     companion object {
         lateinit var instance : MyApplication
         private set

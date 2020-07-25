@@ -11,6 +11,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+/*
+    View Model class performing database actions via contact data repository
+ */
+
 class HomeViewModel : ViewModel() {
 
     @Inject

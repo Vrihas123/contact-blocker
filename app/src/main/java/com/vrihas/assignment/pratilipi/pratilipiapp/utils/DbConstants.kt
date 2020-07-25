@@ -1,5 +1,9 @@
 package com.vrihas.assignment.pratilipi.pratilipiapp.utils
 
+/*
+    Database constants
+ */
+
 class DbConstants {
 
     companion object {

@@ -14,6 +14,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.vrihas.assignment.pratilipi.pratilipiapp.R
 import com.vrihas.assignment.pratilipi.pratilipiapp.data.model.User
 
+/*
+    Adapter class to handle the state of contacts
+*/
+
 class ContactsAdapter internal constructor(context: Context, contactAdapterCallback: ContactAdapterCallback) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>(){
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
@@ -69,6 +73,9 @@ class ContactsAdapter internal constructor(context: Context, contactAdapterCallb
         }
     }
 
+    /*
+        Interface to block the selected contact
+     */
     interface ContactAdapterCallback {
         fun updateContactStatus(user: User)
     }

@@ -20,14 +20,19 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.data.repository.ContactDataR
 import com.vrihas.assignment.pratilipi.pratilipiapp.ui.activity.HomeActivity
 import java.lang.reflect.Method
 
+/*
+    Broadcast Receiver class containing logic for listening incoming calls and disconnecting them
+ */
 
 class IncomingCalReceiver : BroadcastReceiver() {
 
     lateinit var contactDataRepository: ContactDataRepository
 
+    // Objects responsible for ending incoming call
     var telephonyService: ITelephony? = null
     var telecomManager: TelecomManager? = null
 
+    // Notification related objects
     lateinit var notificationManager : NotificationManager
     lateinit var notificationChannel : NotificationChannel
     lateinit var builder : Notification.Builder
@@ -40,7 +45,7 @@ class IncomingCalReceiver : BroadcastReceiver() {
         try {
             val state: String = intent.getStringExtra(TelephonyManager.EXTRA_STATE)
             val number: String? = intent.getExtras()?.getString(TelephonyManager.EXTRA_INCOMING_NUMBER)
-            if (state.equals(TelephonyManager.EXTRA_STATE_RINGING, ignoreCase = true)) {
+            if (state.equals(TelephonyManager.EXTRA_STATE_RINGING, ignoreCase = true)) { // Checking the state of the incoming call
                 val tm = context.getSystemService(Context.TELEPHONY_SERVICE)
                 try {
                     val m: Method = tm.javaClass.getDeclaredMethod("getITelephony")
@@ -48,29 +53,25 @@ class IncomingCalReceiver : BroadcastReceiver() {
                     telephonyService = m.invoke(tm) as ITelephony?
                     if (number != null) {
                         Log.e("incoming", "number===> " + number)
+                        /*
+                            Fetching list of blocked contacts and then matching the incoming call to the numbers of blocked contacts
+                         */
                         val numberList = contactDataRepository.getBlockedContacts(true)
                         for (contact in numberList) {
                             if (contact.number?.contains(number)!! || number.contains(contact.number)) {
                                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
                                     telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager?
                                     if (context.getSystemService(Context.TELECOM_SERVICE) != null) {
-                                        val success = telecomManager?.endCall()
+                                        val success = telecomManager?.endCall() // Ending the call for android version greater than 8.0
                                     }
                                 } else{
-                                    telephonyService!!.endCall()
+                                    telephonyService!!.endCall()  // Ending the call for android version less than 8.0
                                 }
 
                                 showNotifications(context, contact.name.toString())
                                 break
                             }
                         }
-//                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-//                                    telecomManager = context.getSystemService(Context.TELECOM_SERVICE) as TelecomManager?
-//                                    if (context.getSystemService(Context.TELECOM_SERVICE) != null) {
-//                                        val success = telecomManager?.endCall()
-//                                        showNotifications(context, number)
-//                                    }
-//                                }
 //                        Toast.makeText(
 //                            context,
 //                            "Ending the call from: $number",
@@ -109,6 +110,10 @@ class IncomingCalReceiver : BroadcastReceiver() {
 //            e.printStackTrace()
 //        }
     }
+
+    /*
+        Creating notifications according to the android versions
+     */
 
     fun showNotifications(context: Context, name: String) {
         notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

@@ -5,6 +5,10 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.data.model.User
 import com.vrihas.assignment.pratilipi.pratilipiapp.room.db.AppDatabase
 import javax.inject.Inject
 
+/*
+    Repository class for database actions
+ */
+
 class ContactDataRepository{
 
     @Inject

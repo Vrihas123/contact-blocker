@@ -5,6 +5,10 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.vrihas.assignment.pratilipi.pratilipiapp.utils.DbConstants
 
+/*
+    Entity class for room database
+ */
+
 @Entity(tableName = DbConstants.CONTACT_TABLE)
 data class User (
     @PrimaryKey

@@ -4,6 +4,10 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.content.SharedPreferences.Editor
 
+/*
+    Custom Shared Preferences file
+ */
+
 class SharedPrefs(context: Context) {
 
     private val PREF_NAME = "PratilipiSharedPreferences"
