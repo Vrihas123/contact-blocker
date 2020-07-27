@@ -11,7 +11,7 @@ import javax.inject.Singleton
 
 @Database(entities = [User::class], version = 1, exportSchema = false)
 @Singleton
-public abstract class AppDatabase : RoomDatabase() {
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun contactDataDao(): ContactDataDao
 

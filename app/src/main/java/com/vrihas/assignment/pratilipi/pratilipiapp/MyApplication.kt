@@ -7,7 +7,7 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.injection.module.Application
 
 class MyApplication : Application() {
 
-    var mApplicationComponent: ApplicationComponent? = null
+    lateinit var mApplicationComponent: ApplicationComponent
 
     // Creating single instance of Application
     companion object {
@@ -20,12 +20,10 @@ class MyApplication : Application() {
         instance = this
     }
 
-    fun getComponent(): ApplicationComponent? {
-        if (mApplicationComponent == null) {
+    fun getComponent(): ApplicationComponent {
             mApplicationComponent = DaggerApplicationComponent.builder()
                 .applicationModule(ApplicationModule(this))
                 .build()
-        }
         return mApplicationComponent
     }
 }

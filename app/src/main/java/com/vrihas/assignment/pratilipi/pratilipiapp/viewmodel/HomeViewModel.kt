@@ -1,6 +1,5 @@
 package com.vrihas.assignment.pratilipi.pratilipiapp.viewmodel
 
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -21,10 +20,10 @@ class HomeViewModel : ViewModel() {
     lateinit var contactDataRepository: ContactDataRepository
 
 
-    val allContacts: LiveData<MutableList<User>>?
+    val allContacts: LiveData<MutableList<User>>
 
     init {
-        MyApplication.instance.getComponent()!!.inject(this)
+        MyApplication.instance.getComponent().inject(this)
         allContacts = contactDataRepository.getContacts()
     }
 

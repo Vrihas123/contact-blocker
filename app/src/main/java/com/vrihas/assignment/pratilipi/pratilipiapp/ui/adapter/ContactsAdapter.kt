@@ -1,8 +1,6 @@
 package com.vrihas.assignment.pratilipi.pratilipiapp.ui.adapter
 
 import android.content.Context
-import android.opengl.Visibility
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,17 +16,12 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.data.model.User
     Adapter class to handle the state of contacts
 */
 
-class ContactsAdapter internal constructor(context: Context, contactAdapterCallback: ContactAdapterCallback) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>(){
+class ContactsAdapter internal constructor(
+    private var context: Context, private var contactAdapterCallback: ContactAdapterCallback
+) : RecyclerView.Adapter<ContactsAdapter.MyViewHolder>(){
 
     private val inflater: LayoutInflater = LayoutInflater.from(context)
-    private var context: Context
     private var contactList = emptyList<User>() // Cached copy of contacts
-    private var contactAdapterCallback: ContactAdapterCallback
-
-    init {
-        this.contactAdapterCallback = contactAdapterCallback
-        this.context = context
-    }
 
     inner class MyViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val tvContactName: TextView = itemView.findViewById(R.id.tv_contact_name)
@@ -54,7 +47,7 @@ class ContactsAdapter internal constructor(context: Context, contactAdapterCallb
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {
         val contact = contactList[position]
         if (contact.name != null) {
-            holder.tvAlphabet.text = "" + contact.name[0]
+            holder.tvAlphabet.text = contact.name[0].toString()
         }
         holder.tvContactName.text = contact.name
         holder.tvContactNumber.text = contact.number
@@ -66,8 +59,7 @@ class ContactsAdapter internal constructor(context: Context, contactAdapterCallb
             holder.tvAlphabet.setTextColor(ContextCompat.getColor(context, R.color.colorAccent))
         }
         holder.rlContact.setOnClickListener {
-            val blockState: Boolean
-            blockState = !contact.blocked
+            val blockState: Boolean = !contact.blocked
             val user = User(contact.id, contact.name, contact.number, blockState)
             contactAdapterCallback.updateContactStatus(user)
         }

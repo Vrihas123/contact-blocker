@@ -15,7 +15,7 @@ class ContactDataRepository{
     lateinit var database: AppDatabase
 
     init {
-        MyApplication.instance.getComponent()!!.inject(this)
+        MyApplication.instance.getComponent().inject(this)
     }
 
     fun getContacts() = database.contactDataDao().getAllContacts()

@@ -22,7 +22,6 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -35,10 +34,11 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.utils.SharedPrefs
 import com.vrihas.assignment.pratilipi.pratilipiapp.viewmodel.HomeViewModel
 import java.util.*
 
+@Suppress("IMPLICIT_CAST_TO_ANY", "SameParameterValue")
 class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback {
 
     companion object {
-        val REQUEST_ID_MULTIPLE_PERMISSIONS = 1;
+        const val REQUEST_ID_MULTIPLE_PERMISSIONS = 1
     }
 
     private lateinit var rvContacts: RecyclerView
@@ -56,18 +56,18 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_home)
-        MyApplication.instance.getComponent()!!.inject(this)
+        MyApplication.instance.getComponent().inject(this)
         setSupportActionBar(findViewById(R.id.toolbar))
-        supportActionBar!!.setTitle("Tap on the contacts to block...")
+        supportActionBar!!.title = "Tap on the contacts to block..."
         sharedPrefs = SharedPrefs(this)
         initialise()
         setupContactRecyclerView()
         homeViewModel = ViewModelProvider(this).get(HomeViewModel::class.java)
-        homeViewModel.allContacts?.observe(this, Observer { contacts ->
-            contacts?.let { contactsAdapter.setContactList(it) }
+        homeViewModel.allContacts.observe(this, Observer { contacts ->
+            contacts.let { contactsAdapter.setContactList(it) }
         })
 
-        btnImport.setOnClickListener() {
+        btnImport.setOnClickListener {
             if ( checkAndRequestPermissions()) {
                 getContacts()
 //                Log.e("getcontacts", "" + contactsFromDevice.size)
@@ -79,7 +79,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         startService(intent)
     }
 
-    fun initialise() {
+    private fun initialise() {
         rvContacts = findViewById(R.id.rv_contacts)
         btnImport = findViewById(R.id.btn_import)
         llImport = findViewById(R.id.ll_import)
@@ -92,7 +92,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         }
     }
 
-    fun setupContactRecyclerView() {
+    private fun setupContactRecyclerView() {
         contactsAdapter = ContactsAdapter(this, this)
         rvContacts.adapter = contactsAdapter
         rvContacts.layoutManager = LinearLayoutManager(this)
@@ -123,6 +123,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
 
         }
 
+
         val listPermissionsNeeded: MutableList<String> =
             ArrayList()
         if (readcontactpermision != PackageManager.PERMISSION_GRANTED) {
@@ -145,7 +146,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         }
 
 
-        if (!listPermissionsNeeded.isEmpty()) {
+        if (listPermissionsNeeded.isNotEmpty()) {
             ActivityCompat.requestPermissions(
                 this,
                 listPermissionsNeeded.toTypedArray(),
@@ -173,7 +174,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
 
 
                 // Fill with actual results from user
-                if (grantResults.size > 0) {
+                if (grantResults.isNotEmpty()) {
                     var i = 0
                     while (i < permissions.size) {
                         perms[permissions[i]] = grantResults[i]
@@ -219,7 +220,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
                                 )
                             ) {
                                 showDialogOK("Service Permissions are required for this app",
-                                    DialogInterface.OnClickListener { dialog, which ->
+                                    DialogInterface.OnClickListener { _, which ->
                                         when (which) {
                                             DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE ->
                                                 checkAndRequestPermissions()  // proceed with logic by disabling the related features or quit the app.
@@ -253,7 +254,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
                                 )
                             ) {
                                 showDialogOK("Service Permissions are required for this app",
-                                    DialogInterface.OnClickListener { dialog, which ->
+                                    DialogInterface.OnClickListener { _, which ->
                                         when (which) {
                                             DialogInterface.BUTTON_POSITIVE, DialogInterface.BUTTON_NEGATIVE ->
                                                 checkAndRequestPermissions()  // proceed with logic by disabling the related features or quit the app.
@@ -288,7 +289,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         dialog.setMessage(msg)
             .setPositiveButton(
                 "Yes"
-            ) { paramDialogInterface, paramInt ->
+            ) { _, _ ->
                 startActivity(
                     Intent(
                         Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
@@ -298,7 +299,7 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
             }
             .setNegativeButton(
                 "Cancel"
-            ) { paramDialogInterface, paramInt ->
+            ) { _, _ ->
                 checkAndRequestPermissions()
                 // finish();
             }
@@ -310,13 +311,13 @@ class HomeActivity : AppCompatActivity(), ContactsAdapter.ContactAdapterCallback
         btnImport.visibility = View.GONE
         pbContacts.visibility = View.VISIBLE
 
-        var numberList: MutableList<String> = ArrayList()
-        val resolver: ContentResolver = contentResolver;
+        val numberList: MutableList<String> = ArrayList()
+        val resolver: ContentResolver = contentResolver
         val cursor = resolver.query(ContactsContract.Contacts.CONTENT_URI, null, null, null,
             null)
 
         if (cursor?.count!! > 0) {
-            var i : Int = 1
+            var i = 1
             while (cursor.moveToNext()) {
                 val id = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts._ID))
                 val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))

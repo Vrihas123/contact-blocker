@@ -8,15 +8,12 @@ import com.vrihas.assignment.pratilipi.pratilipiapp.viewmodel.HomeViewModel
 import dagger.Component
 import javax.inject.Singleton
 
-/*
-
- */
 
 @Singleton
 @Component(modules = [ApplicationModule::class])
-public interface ApplicationComponent {
+interface ApplicationComponent {
 
-    fun getDatabse(): AppDatabase
+    fun getDatabase(): AppDatabase
 
     fun getContactDataRepository(): ContactDataRepository
 
